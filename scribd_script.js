@@ -1,15 +1,15 @@
 // ==UserScript==
-// @name            Scribd Unblur-Downloader
+// @name              Scribd Unblur-Downloader
 // @description		  Unblur and downlaod Scribd documents.
-// @author          MasterScavenger
-// @version         1.0
-// @include         http://*.scribd.com/doc/*
-// @include         https://*.scribd.com/doc/*
-// @include			    http://*.scribd.com/document/*
-// @include			    https://*.scribd.com/document/*
-// @grant           GM_addStyle
-// @run-at          document-end
-// @require         https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js
+// @author            MasterScavenger
+// @version           1.0
+// @include           http://*.scribd.com/doc/*
+// @include           https://*.scribd.com/doc/*
+// @include			  http://*.scribd.com/document/*
+// @include			  https://*.scribd.com/document/*
+// @grant             GM_addStyle
+// @run-at            document-end
+// @require           https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js
 // ==/UserScript==
 
 /*
