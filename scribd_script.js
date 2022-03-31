@@ -149,7 +149,6 @@ window.onscroll = function(){
         $(dl8).insertAfter(cont[0]);
     };
     if (delta > 0){
-        console.log("true")
         $(dl8).remove();
         $(download).appendTo(container);
     };
