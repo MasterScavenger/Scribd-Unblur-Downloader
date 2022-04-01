@@ -1,26 +1,28 @@
 // ==UserScript==
-// @name              Scribd Unblur-Downloader
-// @description		  Unblur and downlaod Scribd documents.
-// @author            MasterScavenger
-// @version           1.0
-// @include           http://*.scribd.com/doc/*
-// @include           https://*.scribd.com/doc/*
-// @include			  http://*.scribd.com/document/*
-// @include			  https://*.scribd.com/document/*
-// @grant             GM_addStyle
-// @run-at            document-end
-// @require           https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js
+// @name            Scribd Unblur-Downloader
+// @description		Unblur and downlaod Scribd documents.
+// @author          MasterScavenger
+// @version         1.1
+// @updateURL       https://raw.githubusercontent.com/MasterScavenger/Scribd-Unblur-Downloader/main/scribd_script.js
+// @downloadURL     https://raw.githubusercontent.com/MasterScavenger/Scribd-Unblur-Downloader/main/scribd_script.js
+// @include         http://*.scribd.com/doc/*
+// @include         https://*.scribd.com/doc/*
+// @include			http://*.scribd.com/document/*
+// @include			https://*.scribd.com/document/*
+// @grant           GM_addStyle
+// @run-at          document-end
+// @require         https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js
 // ==/UserScript==
 
 /*
 DISCLAIMER:
 Use this script for educational purpose only.
-If you download contents for scribd regularly, it is best
+If you download contents from scribd regularly, it is best
 for you to purchase a premium account.
 */
 
 let container = document.getElementsByClassName("doc_actions");
-let class1 = document.createElement("div")
+let class1 = document.createElement("div");
 let contents = container[0].children;
 class1.classList.add('my_menu');
 $(class1).appendTo(container);
@@ -39,7 +41,7 @@ let DLSurl = "https://dlscrib.com/?url=" + id;
 let SFreeurl = "https://scribdfree.com/" + id.split('https://www.scribd.com/')[1];
 let SFullurl = "https://scribful.com/" + id.split('https://www.scribd.com/')[1];
 let DSurl = "https://downscribd.com/" + id.split('https://www.scribd.com/')[1];
-let SPDurl = "https://scribd.pdf-download.net/download.php?url=" + id + "&sub=CHECK+DOCUMENT";
+let SPDurl = "https://www.scribd.com/embeds/" + id.split('/')[4] + "/content?start_page=1&view_mode=scroll&access_key=key-DXFMtVntRav5tlToCCWR";
 //Button 1
 let dl1 = document.createElement("span");
 dl1.id = "docdownloader";
@@ -96,10 +98,11 @@ dl6a.target = "_blank";
 dl6.appendChild(dl6a);
 //Button 7
 let dl7 = document.createElement("span");
-dl7.id = "scribdpdf";
+dl7.id = "scribdview";
+dl7.style.margin = "0 10px 10px";
 let dl7a = document.createElement("A");
-dl7a.className = cn;
-dl7a.style.backgroundImage = "url('https://scribd.pdf-download.net/pdf.ico')";
+dl7a.className = "scribdview";
+dl7a.style.backgroundImage = "url('http://simpleicon.com/wp-content/uploads/eye2.png')";
 dl7a.href = SPDurl;
 dl7a.target = "_blank";
 dl7.appendChild(dl7a);
@@ -110,7 +113,7 @@ $(dl3).appendTo(download);
 $(dl4).appendTo(download);
 $(dl5).appendTo(download);
 $(dl6).appendTo(download);
-$(dl7).appendTo(download);
+$(dl7).appendTo(class1);
 $(download).appendTo(container);
 
 //DL Button (Scroll)
@@ -125,18 +128,19 @@ let dlscroll = document.createElement("div");
 let dlscroll_contents = document.getElementById("DL-Group").childNodes
 dlscroll.setAttribute("id", "DL-Button");
 $(dlscroll_contents).clone().appendTo(dlscroll);
-$(dlscroll).appendTo($("body"));
+$(dlscroll).prependTo(dl8);
 
 dl8.onmouseover = function(){
+    dl7a.style = null;
     dl8a.style = null;
-    $(dlscroll).prependTo(dl8);
     GM_addStyle(`
-        #DL-Button {display: inline-grid; position: absolute; z-index: 9999999; overflow: visible; border-radius: 0 0 20px 20px; background-color: rgb(72 72 72 / 50%); margin:0 27px; padding: 5px 0;}
+        #DL-Button {display: inline-grid; position: absolute; z-index: 1; border-radius: 20px 20px 0 0; background-color: #00000061; margin:0 27px; padding: 5px 0; bottom: 25px;}
         .down_btn {display: inherit; height: 30px; width: 30px; background-size: 30px; margin: 6px 6px;}
     `);
 };
 
 dl8.onmouseleave = function(){
+    dl7a.style.backgroundImage = "url('http://simpleicon.com/wp-content/uploads/eye2.png')";
     dl8a.style.backgroundImage = "url('https://www.halock.com/wp-content/uploads/2020/02/Download-Button-Free-PNG-Image.png')";
     GM_addStyle("#DL-Button {display: none;}");
 };
@@ -144,13 +148,19 @@ dl8.onmouseleave = function(){
 window.onscroll = function(){
     let class3 = document.getElementsByClassName("auto__doc_page_body_toolbar");
     let cont = document.getElementsByClassName("left_tools");
+    let loc = document.getElementsByClassName("body");
     let delta = class3[0].offsetTop - window.pageYOffset
-    if (delta <= 0){
-        $(dl8).insertAfter(cont[0]);
+    if (delta < 0){
+        $(dl8).prependTo(loc);
+        $(dl7).prependTo(loc);
+        GM_addStyle(`#scribdview {position: fixed; z-index: 9999; bottom: 65px; left: 5px;}`);
     };
-    if (delta > 0){
+    if (delta >= 0){
+        $(dl7).remove();
         $(dl8).remove();
         $(download).appendTo(container);
+        $(dl7).appendTo(class1);
+        GM_addStyle(`#scribdview {position: inherit; z-index: 0}`);
     };
 };
 
@@ -162,12 +172,14 @@ GM_addStyle(`
     .down_btn:hover {transform: scale(1.5);}
     .dlbtn {display: flex; height: 75px; width: 100px; background-size: 100px}
     #DL-Button {display: none;}
-    .text_layer {	color: inherit !important; text-shadow: none !important; }
-    .page-blur-promo {	display: none !important; }
-    .page-blur-promo-overlay:parent {	display: none !important; }
-    .absimg { opacity: 1.0 !important; }
-    .page_missing_explanation { display: none !important; }
-    .autogen_class_views_pdfs_page_blur_promo { display: none !important; }
-    .a { color: black !important; }
-    .promo { display: none !important; }
+    #scroll_DL {position: fixed; z-index: 99999; bottom: 0; left: 0;}
+    .scribdview {display: inherit; height: 50px; width: 50px; background-size: 50px; margin: 0 6px;}
+    .text_layer {color: inherit !important; text-shadow: none !important; }
+    .page-blur-promo {display: none !important;}
+    .page-blur-promo-overlay:parent {display: none !important;}
+    .absimg {opacity: 1.0 !important; }
+    .page_missing_explanation {display: none !important;}
+    .autogen_class_views_pdfs_page_blur_promo {display: none !important;}
+    .a {color: black !important;}
+    .promo {display: none !important;}
 `);
