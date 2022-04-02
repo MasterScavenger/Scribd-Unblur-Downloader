@@ -2,7 +2,7 @@
 // @name            Scribd Unblur-Downloader
 // @description		Unblur and downlaod Scribd documents.
 // @author          MasterScavenger
-// @version         1.1
+// @version         1.2
 // @updateURL       https://raw.githubusercontent.com/MasterScavenger/Scribd-Unblur-Downloader/main/scribd_script.js
 // @downloadURL     https://raw.githubusercontent.com/MasterScavenger/Scribd-Unblur-Downloader/main/scribd_script.js
 // @include         http://*.scribd.com/doc/*
@@ -17,7 +17,7 @@
 /*
 DISCLAIMER:
 Use this script for educational purpose only.
-If you download contents from scribd regularly, it is best
+If you download contents from Scribd regularly, it is best
 for you to purchase a premium account.
 */
 
@@ -101,7 +101,7 @@ let dl7 = document.createElement("span");
 dl7.id = "scribdview";
 dl7.style.margin = "0 10px 10px";
 let dl7a = document.createElement("A");
-dl7a.className = "scribdview";
+dl7a.className = cn;
 dl7a.style.backgroundImage = "url('http://simpleicon.com/wp-content/uploads/eye2.png')";
 dl7a.href = SPDurl;
 dl7a.target = "_blank";
@@ -131,7 +131,8 @@ $(dlscroll_contents).clone().appendTo(dlscroll);
 $(dlscroll).prependTo(dl8);
 
 dl8.onmouseover = function(){
-    dl7a.style = null;
+    $(dl7).appendTo(dlscroll);
+    dl7.style.margin = null;
     dl8a.style = null;
     GM_addStyle(`
         #DL-Button {display: inline-grid; position: absolute; z-index: 1; border-radius: 20px 20px 0 0; background-color: #00000061; margin:0 27px; padding: 5px 0; bottom: 25px;}
@@ -140,7 +141,6 @@ dl8.onmouseover = function(){
 };
 
 dl8.onmouseleave = function(){
-    dl7a.style.backgroundImage = "url('http://simpleicon.com/wp-content/uploads/eye2.png')";
     dl8a.style.backgroundImage = "url('https://www.halock.com/wp-content/uploads/2020/02/Download-Button-Free-PNG-Image.png')";
     GM_addStyle("#DL-Button {display: none;}");
 };
@@ -152,15 +152,12 @@ window.onscroll = function(){
     let delta = class3[0].offsetTop - window.pageYOffset
     if (delta < 0){
         $(dl8).prependTo(loc);
-        $(dl7).prependTo(loc);
-        GM_addStyle(`#scribdview {position: fixed; z-index: 9999; bottom: 65px; left: 5px;}`);
     };
     if (delta >= 0){
-        $(dl7).remove();
         $(dl8).remove();
         $(download).appendTo(container);
         $(dl7).appendTo(class1);
-        GM_addStyle(`#scribdview {position: inherit; z-index: 0}`);
+        dl7.style.margin = "0 10px 10px";
     };
 };
 
@@ -170,14 +167,13 @@ GM_addStyle(`
     #DL-Group {display: flex;}
     .down_btn {display: inherit; height: 30px; width: 30px; background-size: 30px; margin: 0 6px;}
     .down_btn:hover {transform: scale(1.5);}
-    .dlbtn {display: flex; height: 75px; width: 100px; background-size: 100px}
+    .dlbtn {display: flex; height: 75px; width: 100px; background-size: 100px;}
     #DL-Button {display: none;}
     #scroll_DL {position: fixed; z-index: 99999; bottom: 0; left: 0;}
-    .scribdview {display: inherit; height: 50px; width: 50px; background-size: 50px; margin: 0 6px;}
-    .text_layer {color: inherit !important; text-shadow: none !important; }
+    .text_layer {color: inherit !important; text-shadow: none !important;}
     .page-blur-promo {display: none !important;}
     .page-blur-promo-overlay:parent {display: none !important;}
-    .absimg {opacity: 1.0 !important; }
+    .absimg {opacity: 1.0 !important;}
     .page_missing_explanation {display: none !important;}
     .autogen_class_views_pdfs_page_blur_promo {display: none !important;}
     .a {color: black !important;}
