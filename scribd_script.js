@@ -21,6 +21,16 @@ If you download contents from Scribd regularly, it is best
 for you to purchase a premium account.
 */
 
+let id = window.location.href;
+let new_url = id + "#";
+if (id.indexOf("scribd.com/embeds") > -1){
+    if (id.indexOf("#") > -1){
+        return;
+    };
+    location.replace(new_url);
+    location.reload();
+};
+
 let container = document.getElementsByClassName("doc_actions");
 let class1 = document.createElement("div");
 let contents = container[0].children;
@@ -31,17 +41,18 @@ $(contents).appendTo(class1);
 let download = document.createElement("div");
 download.setAttribute("id", "DL-Group");
 
-
 //button creation
-let id = window.location.href;
 let cn = "down_btn"
 let DDLurl = "https://docdownloader.com/init/scribd?url=" + id;
-let SDurl = "https://scribddown.com/download/" + id.split('https://www.scribd.com/document/')[1];
+let SVDurl = "https://scribd.vdownloaders.com/" + id.split('https://www.scribd.com/')[1];
+//
 let DLSurl = "https://dlscrib.com/?url=" + id;
 let SFreeurl = "https://scribdfree.com/" + id.split('https://www.scribd.com/')[1];
 let SFullurl = "https://scribful.com/" + id.split('https://www.scribd.com/')[1];
-let DSurl = "https://downscribd.com/" + id.split('https://www.scribd.com/')[1];
-let SPDurl = "https://www.scribd.com/embeds/" + id.split('/')[4] + "/content?start_page=1&view_mode=scroll&access_key=key-DXFMtVntRav5tlToCCWR";
+//
+let DSurl = "https://scribd.vpdfs.com/" + id.split('https://www.scribd.com/')[1];
+//let SPDurl = "https://www.scribd.com/embeds/" + id.split('/')[4] + "/content?start_page=1&view_mode=scroll&access_key=key-DXFMtVntRav5tlToCCWR";
+let SPDurl = "https://www.scribd.com/embeds/" + id.split('/')[4] + "/content?view_mode=scroll&show_recommendations=false";
 //Button 1
 let dl1 = document.createElement("span");
 dl1.id = "docdownloader";
@@ -56,8 +67,8 @@ let dl2 = document.createElement("span");
 dl2.id = "scribddown";
 let dl2a = document.createElement("A");
 dl2a.className = cn;
-dl2a.style.backgroundImage = "url('https://scribddown.com/favicon.ico')";
-dl2a.href = SDurl;
+dl2a.style.backgroundImage = "url('https://scribd.vdownloaders.com/favicon-32x32.png')";
+dl2a.href = SVDurl;
 dl2a.target = "_blank";
 dl2.appendChild(dl2a);
 //Button 3
@@ -92,7 +103,7 @@ let dl6 = document.createElement("span");
 dl6.id = "downscribd";
 let dl6a = document.createElement("A");
 dl6a.className = cn;
-dl6a.style.backgroundImage = "url('https://downscribd.com/favicon-32x32.png')";
+dl6a.style.backgroundImage = "url('https://scribd.vpdfs.com/favicon-32x32.png')";
 dl6a.href = DSurl;
 dl6a.target = "_blank";
 dl6.appendChild(dl6a);
@@ -177,5 +188,6 @@ GM_addStyle(`
     .page_missing_explanation {display: none !important;}
     .autogen_class_views_pdfs_page_blur_promo {display: none !important;}
     .a {color: black !important;}
-    .promo {display: none !important;}
+    .promo_div {display: none !important;}
 `);
+
